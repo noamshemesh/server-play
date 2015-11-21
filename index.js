@@ -20,12 +20,20 @@ app.post('/audio', function (req, res) {
       return res.status(500).send(err);
     }
 
-    exec('play /tmp/audio.wav', function (err) {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      res.send('Ok');
+    var cmd = exec('play /tmp/audio.wav');
+    cmd.stdout.on('data', function (output) {
+      console.log(output);
     });
+
+    cmd.on('close', function () {
+      console.log('done');
+    });
+
+    cmd.stderr.on('data', function (err) {
+      console.log('error', err);
+    });
+
+    res.send('Ok');
   });
 });
 
