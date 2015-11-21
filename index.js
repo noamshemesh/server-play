@@ -6,9 +6,16 @@ var exec = require('child_process').exec;
 var serveStatic = require('serve-static');
 var path = require('path');
 var fs = require('fs');
+var auth = require('http-auth');
 
 var app = express();
 
+var basic = auth.basic({
+    realm: "Play server",
+    file: "/usr/local/apache/passwd/passwords"
+});
+
+app.use(auth.connect(basic));
 app.use(bodyParser.raw({ type: 'audio/wav', limit: '10mb' }));
 app.use(methodOverride());
 // app.use(busboy());
