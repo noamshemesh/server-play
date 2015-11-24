@@ -1,0 +1,25 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          server-play 
+# Required-Start:    $local_fs 
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: server-play
+### END INIT INFO
+
+export PATH=$PATH:/usr/local/bin:/opt/node/bin
+export NODE_PATH=$NODE_PATH:/opt/node/lib/node_modules
+
+case "$1" in
+  start)
+  exec forever --uid "server-play" --sourceDir=/home/pi/server-play -a -p /var/run start index.js
+  ;;
+
+  stop)
+  exec forever -p /var/run stop server-play 
+  ;;
+esac
+
+exit 0
+
